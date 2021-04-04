@@ -1,7 +1,6 @@
 package agendacontactos;
 import java.util.ArrayList;
 
-
 public class AgendaTelefonica {
 	
 	//propiedad lista con los contactos que se guardan en la agenda
@@ -12,10 +11,8 @@ public class AgendaTelefonica {
 		this.agenda = new ArrayList<Contacto>();
 	}
 	
-
-	
 	/**
-	 * M�todo para agregar un nuevo contacto al final de la lista -agenda
+	 * Método para agregar un nuevo contacto al final de la lista -agenda
 	 * Si ya existe otro contacto con el mismo nombre y apellidos, no lo agrega
 	 * @param c: objeto de la clase Contacto con el contacto a agregar
 	 * @return: true si se agerega correctamente, false en otro caso
@@ -175,8 +172,81 @@ public class AgendaTelefonica {
 			
 		}
 		
-		
+	/**
+     * Metodo para ordenar alfabaticamente (nombre y apellidos)
+     * a partir de la lista de contactos. Se usa el metodo toArray() de  la 
+     * clase ArrayList para obtener un array estatico con sus elementos
+     * En la ordenacion utiliza el metodo de insercien
+     * @return:   array de objetos Contacto ordenados alfabeticamente
+     */
+		//Contacto[]
+	    public void obtenerListaOrdenada(){
+	        
+	        Contacto[] listaOrdenada= new Contacto[this.agenda.size()];
+	       this.agenda.toArray(listaOrdenada);
+	        //ordenamos por el algoritmo de insercion
+	        
+	        Contacto auxiliar;
+	        boolean hayhueco;
+	        
+	        for (int i = 0; i < listaOrdenada.length; i++){
+	                    
+	             auxiliar = (Contacto)listaOrdenada[i];
+	             int j = i-1;
+	             hayhueco=false;
+	             
+	             while (j >=0 && !hayhueco){
+	                 if (esMayor((Contacto)listaOrdenada[j] ,auxiliar)){
+	                     listaOrdenada[j+1] = listaOrdenada[j];
+	                     j--;
+	                 } else
+	                     hayhueco=true;
+	            }
+	            listaOrdenada[j+1] = auxiliar;
+	        } //fin del bucle para
+	        
+	        
+	        
+            this.agenda.clear();
+            for (Contacto c : listaOrdenada) {
+           	 this.agenda.add(c);
+            }
+	        //return this.agenda;
+	        
+	    } //fin de la ordenación
+	        
+    /** 
+     * Metodo para determinar si dados dos contactos, el primero es alfabaticamente
+     *  posterior al segundo
+     * @param c1: primer objeto Contacto
+     * @param c2: segundo objeto Contacto
+     * @return: true si el primer contacto es alfabaticamente mayor al segundo: false en otro caso
+     */
+    public static boolean esMayor (Contacto c1, Contacto c2){
+        
+        boolean resultado=false;
+        //se comparan los apellidos
+        if (c1.getApellidos().compareToIgnoreCase(c2.getApellidos())>0){
+            resultado = true;
+            //apellidos iguales
+        } else if (c1.getApellidos().compareToIgnoreCase(c2.getApellidos())==0){
+        	//se ordena por nombre
+            if (c1.getNombre().compareToIgnoreCase(c2.getNombre())>0){
+                resultado =true;
+            }
+        }
+        //en el resto de casos c1 NO es mayor que c2
+        return resultado;
+    }
+    public void mostarListaOrdenada (Contacto[] c) {
+   	 System.out.println("\tNOMBRE 		 APELLIDOS 		 TELEFONO");
+		for (Contacto datos : c) {
+			System.out.format("\n\t %s \t\t %s \t\t %s", datos.getNombre() ,
+					datos.getApellidos(),
+					datos.getTelefono());
+		}
+	}		
 	
-	
+
 
 }
